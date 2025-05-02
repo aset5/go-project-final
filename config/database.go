@@ -11,7 +11,7 @@ import (
 var DB *gorm.DB
 
 func InitDB() {
-	dsn := "host=localhost user=postgres password=andaset2005 dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Almaty"
+	dsn := "host=db user=postgres password=andaset2005 dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Almaty"
 	var err error
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
@@ -20,7 +20,7 @@ func InitDB() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	if err := DB.AutoMigrate(&models.User{}); err != nil {
+	if err := DB.AutoMigrate(&models.User{}, &models.Product{}); err != nil {
 		log.Fatal("AutoMigrate error:", err)
 	}
 }
