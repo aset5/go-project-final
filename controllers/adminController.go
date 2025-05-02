@@ -16,8 +16,11 @@ func BanUser(c *gin.Context) {
 		return
 	}
 
-	user.Active = false
-	config.DB.Save(&user)
+	user.IsBanned = true
+	if err := config.DB.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to ban user"})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "User banned"})
 }
@@ -31,8 +34,11 @@ func UnbanUser(c *gin.Context) {
 		return
 	}
 
-	user.Active = true
-	config.DB.Save(&user)
+	user.IsBanned = false
+	if err := config.DB.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to unban user"})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "User unbanned"})
 }
