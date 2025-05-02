@@ -1,0 +1,30 @@
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: go_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 7982
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: go_app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: 7982
+      DB_NAME: postgres
+
+volumes:
+  pgdata:
