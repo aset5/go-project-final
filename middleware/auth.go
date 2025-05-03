@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// Регистрация нового пользователя
 func Register(c *gin.Context) {
 	var req struct {
 		Username string `json:"username"`
@@ -37,7 +38,7 @@ func Register(c *gin.Context) {
 		Username: req.Username,
 		Password: string(hashedPassword),
 		Role:     req.Role,
-		Active:   true,
+		Active:   true, // Аккаунт активен по умолчанию
 	}
 
 	if err := config.DB.Create(&user).Error; err != nil {
@@ -66,7 +67,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	if !user.Active {
+	if user.IsBanned {
 		c.JSON(http.StatusForbidden, gin.H{"error": "Your account is banned"})
 		return
 	}
