@@ -9,7 +9,6 @@ import (
 	"net/http"
 )
 
-// Регистрация нового пользователя
 func Register(c *gin.Context) {
 	var req struct {
 		Username string `json:"username"`
@@ -38,7 +37,7 @@ func Register(c *gin.Context) {
 		Username: req.Username,
 		Password: string(hashedPassword),
 		Role:     req.Role,
-		Active:   true, // Аккаунт активен по умолчанию
+		Active:   true,
 	}
 
 	if err := config.DB.Create(&user).Error; err != nil {
