@@ -8,6 +8,12 @@ import (
 )
 
 func BanUser(c *gin.Context) {
+	roleAny, exists := c.Get("userRole")
+	if !exists || roleAny != "admin" {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Only admin can ban users"})
+		return
+	}
+
 	id := c.Param("id")
 	var user models.User
 
@@ -26,6 +32,12 @@ func BanUser(c *gin.Context) {
 }
 
 func UnbanUser(c *gin.Context) {
+	roleAny, exists := c.Get("userRole")
+	if !exists || roleAny != "admin" {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Only admin can unban users"})
+		return
+	}
+
 	id := c.Param("id")
 	var user models.User
 
