@@ -79,3 +79,7 @@ func Login(c *gin.Context) {
 	token, _ := utils.GenerateJWT(user.ID, user.Role)
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
+
+func LogoutUser(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully logged out"})
+}
